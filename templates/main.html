@@ -48,17 +48,23 @@
         </button>
 
         {% elif 'c_username' in session%}
-
+            <button><a href="{{ url_for('transaction_history') }}">История транзакций</a></button>
+            <button><a href="{{ url_for('transfer_money') }}">Перевести деньги</a></button>
         <span  style="right: -7vw; position: relative; color:green">{{ name }}</span>
-        <button style="position: relative; left: 65vw;">
+        <button style="position: relative; left: 35vw;">
             <a href="{{ url_for('logout') }}">Выйти</a>
         </button>
-        
         {% endif %}
 
     </header>
     
     <main>
+        {% if 'c_username' in session %}
+        <h3>Ваш баланс: {{ balance }} руб.</h3>
+        <h3>Ваше ФИО: {{ c_fullname }}</h3>
+        <h3>Ваш телефон: {{ phone }}</h3>
+        <h3>Ваш номер счета: {{ account_number }}</h3>
+        {% endif %}
     </main>
     <br>
     <footer style="position: relative; top: 2vw;">

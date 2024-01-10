@@ -39,7 +39,7 @@ def main():
 
         visible_user = session.get('c_full_name', 'Anon')
 
-        return render_template('main.html', name=visible_user, all_users=all_users)
+        return render_template('main.html', name=visible_user, all_users=all_users, balance=session.get('balance'), c_fullname=session.get('c_full_name'), phone=session.get('phone'), account_number=session.get('account_number'))
     
     if 'm_username' in session:
         all_managers = managers.query.all()
@@ -103,6 +103,9 @@ def login():
     session['client_id'] = c_user.client_id
     session['c_username'] = c_user.c_username
     session['c_full_name'] = c_user.c_full_name
+    session['balance'] = c_user.balance
+    session['phone'] = c_user.phone
+    session['account_number'] = c_user.account_number
 
     return redirect("index")
 
@@ -155,9 +158,19 @@ def register():
         return render_template("register.html", errors=errors)
 
     existing_user = users.query.filter_by(c_username=c_username).first()
+    existing_phone = users.query.filter_by(phone=phone).first()
+    existing_an = users.query.filter_by(account_number=account_number).first()
 
     if existing_user:
         errors.append('Пользователь с данным именем уже существует')
+        return render_template('register.html', errors=errors, resultСur=existing_user)
+    
+    if existing_phone:
+        errors.append('Пользователь с данным номером телефона уже существует')
+        return render_template('register.html', errors=errors, resultСur=existing_user)
+    
+    if existing_an:
+        errors.append('Пользователь с данным номером счета уже существует')
         return render_template('register.html', errors=errors, resultСur=existing_user)
 
     new_user = users(c_username=c_username, c_password=c_password, c_full_name=c_fullname, phone=phone, account_number=account_number, balance=balance)
@@ -189,7 +202,7 @@ def transaction_history():
     return render_template('transaction_history.html', user=user, transactions_sent=transactions_sent, transactions_received=transactions_received)
 
 # Перевод денег
-@app.route('/transfer_money', methods=['POST'])
+@app.route('/transfer_money', methods=['POST', 'GET'])
 def transfer_money():
     if 'client_id' not in session:
         return redirect(url_for('login'))
@@ -214,7 +227,10 @@ def transfer_money():
             receiver.balance += amount
 
             db.session.commit()
+            session['balance'] = user.balance
 
             return redirect(url_for('transaction_history'))
         else:
-            return 'Ошибка в переводе денег'
+            return redirect(url_for('transfer_money'))
+        
+    return render_template('transfer_money.html')

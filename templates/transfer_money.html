@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block main %}
+    <h1>Перевод денег</h1>
+
+    <form method="post" action="{{ url_for('transfer_money') }}">
+        <div>
+            <label for="receiver_account_number">Номер счета получателя:</label>
+            <input type="text" id="receiver_account_number" name="receiver_account_number" required>
+        </div>
+        <div>
+            <label for="amount">Сумма перевода:</label>
+            <input type="number" id="amount" name="amount" required>
+        </div>
+        <div>
+            <button type="submit">Перевести</button>
+        </div>
+    </form>
+{% endblock %}

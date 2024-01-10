@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block main %}
+    <h1>История транзакций</h1>
+
+    <h3>Ваши транзакции:</h3>
+    {% for transaction in transactions_sent %}
+    <p>Отправлено пользователю с ID {{ transaction.receiver_id }}, Сумма: {{ transaction.amount }}, Время: {{ transaction.timestamp }}</p>
+    {% endfor %}
+
+    {% for transaction in transactions_received %}
+        <p>Получено от пользователя с ID {{ transaction.sender_id }}, Сумма: {{ transaction.amount }} руб., Время: {{ transaction.timestamp }}</p>
+    {% endfor %}
+{% endblock %}
