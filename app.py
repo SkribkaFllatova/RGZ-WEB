@@ -195,15 +195,21 @@ def transaction_history():
     client_id = session['client_id']
     user = users.query.get(client_id)
 
-    # Получение транзакций отправленных и полученных клиентом
-    transactions_sent = transactions.query.filter_by(sender_id=client_id).all()
-    transactions_received = transactions.query.filter_by(receiver_id=client_id).all()
+    # Получение транзакций отправленных и полученных клиентом с информацией о пользователях
+    transactions_info_sent = db.session.query(transactions, users.c_full_name.label('sender_full_name')).\
+        join(users, transactions.sender_id == users.client_id).\
+        filter(transactions.receiver_id == client_id).all()
 
-    return render_template('transaction_history.html', user=user, transactions_sent=transactions_sent, transactions_received=transactions_received)
+    transactions_info_received = db.session.query(transactions, users.c_full_name.label('receiver_full_name')).\
+        join(users, transactions.receiver_id == users.client_id).\
+        filter(transactions.sender_id == client_id).all()
+
+    return render_template('transaction_history.html', user=user, transactions_sent=transactions_info_sent, transactions_received=transactions_info_received)
 
 # Перевод денег
 @app.route('/transfer_money', methods=['POST', 'GET'])
 def transfer_money():
+    errors = []
     if 'client_id' not in session:
         return redirect(url_for('login'))
 
@@ -211,13 +217,19 @@ def transfer_money():
     user = users.query.get(client_id)
 
     if request.method == 'POST':
-        receiver_account_number = request.form.get('receiver_account_number')
+        receiver_type = request.form.get('receiver_type')
+        receiver_id = request.form.get('receiver_id')
         amount = float(request.form.get('amount'))
 
         # Проверка наличия получателя и достаточности средств
-        receiver = users.query.filter_by(account_number=receiver_account_number).first()
+        if receiver_type == 'phone':
+            receiver = users.query.filter_by(phone=receiver_id).first()
+        elif receiver_type == 'account_number':
+            receiver = users.query.filter_by(account_number=receiver_id).first()
+        else:
+            return redirect(url_for('transfer_money'))
 
-        if receiver and user.balance >= amount:
+        if receiver and user.balance >= amount and receiver.client_id != client_id:
             # Создание транзакции
             new_transaction = transactions(amount=amount, sender_id=user.client_id, receiver_id=receiver.client_id)
             db.session.add(new_transaction)
@@ -227,10 +239,13 @@ def transfer_money():
             receiver.balance += amount
 
             db.session.commit()
+
+            # Обновление баланса в сессии
             session['balance'] = user.balance
 
             return redirect(url_for('transaction_history'))
         else:
-            return redirect(url_for('transfer_money'))
+            errors.append('Нельзя отправить деньги себе')
+            return render_template('transfer_money.html', errors=errors)
         
-    return render_template('transfer_money.html')
+    return render_template('transfer_money.html', errors=errors)

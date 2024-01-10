@@ -3,17 +3,20 @@
 {% block main %}
     <h1>Перевод денег</h1>
 
-    <form method="post" action="{{ url_for('transfer_money') }}">
-        <div>
-            <label for="receiver_account_number">Номер счета получателя:</label>
-            <input type="text" id="receiver_account_number" name="receiver_account_number" required>
-        </div>
-        <div>
-            <label for="amount">Сумма перевода:</label>
-            <input type="number" id="amount" name="amount" required>
-        </div>
-        <div>
-            <button type="submit">Перевести</button>
-        </div>
+    <form method="POST" action="{{ url_for('transfer_money') }}">
+        <label for="receiver_type">Выберите тип получателя:</label>
+        <select id="receiver_type" name="receiver_type">
+            <option value="phone">Номер телефона</option>
+            <option value="account_number">Номер счета</option>
+        </select>
+        <br>
+        <label for="receiver_id">Введите номер получателя:</label>
+        <input type="text" id="receiver_id" name="receiver_id" required>
+        <br>
+        <label for="amount">Введите сумму:</label>
+        <input type="number" id="amount" name="amount" required>
+        <span class='error' style="top: 1.4vw;">{{ errors[0] }}</span> 
+        <br>
+        <button type="submit">Перевести деньги</button>
     </form>
 {% endblock %}

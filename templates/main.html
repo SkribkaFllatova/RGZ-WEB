@@ -31,10 +31,18 @@
 </head>
 <body>
     <header style="height: 4vw;">
-        <span style="font-size: 3vw;">Банк</span>
-        <a href="">Транзакции</a>
+        <span style="font-size: 3vw;">Банк "Правобережный"</span>
 
-        {% if 'm_username' in session %}
+        {% if 'c_username' in session%}
+        
+            <button><a href="{{ url_for('transaction_history') }}">История транзакций</a></button>
+            <button><a href="{{ url_for('transfer_money') }}">Перевести деньги</a></button>
+        <span  style="right: -7vw; position: relative; color:green">{{ name }}</span>
+        <button style="position: relative; left: 15vw;">
+            <a href="{{ url_for('logout') }}">Выйти</a>
+        </button>
+
+        {% elif 'm_username' in session %}
 
         <button style="color: white; background-color: blueviolet; left: 5vw; position: relative;" href="">
             <a style="color: white" href="/app/register" target="_self">Зарегистрировать нового пользователя</a>
@@ -43,17 +51,10 @@
             <a style="color: white" href="/app/registerAdm" target="_self">Зарегистрировать нового менеджера</a>
         </button>
         <span  style="right: -7vw; position: relative; color:green">{{ name }}</span>
-        <button style="position: relative; left: 15vw;">
+        <button style="position: relative; left: 10vw;">
             <a href="{{ url_for('logout') }}">Выйти</a>
         </button>
 
-        {% elif 'c_username' in session%}
-            <button><a href="{{ url_for('transaction_history') }}">История транзакций</a></button>
-            <button><a href="{{ url_for('transfer_money') }}">Перевести деньги</a></button>
-        <span  style="right: -7vw; position: relative; color:green">{{ name }}</span>
-        <button style="position: relative; left: 35vw;">
-            <a href="{{ url_for('logout') }}">Выйти</a>
-        </button>
         {% endif %}
 
     </header>
@@ -68,7 +69,7 @@
     </main>
     <br>
     <footer style="position: relative; top: 2vw;">
-     Банк
+     Банк "Правобережный"
     </footer>
     
 </body>
