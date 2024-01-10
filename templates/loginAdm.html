@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block main %}
+    <h1>Вход для администрации</h1>
+    <h2>Пожалуйста, авторизуйтесь</h2>
+    <h3 style="text-align: center; color: red">{{ errors.h }}</h3>
+    <form method="post">
+        <div>
+            <label for="m_username">Логин:</label>
+            <input type="text" id="m_username" name="m_username" value="{{ m_username }}">
+            <span class='error' style="top: 1.4vw;">{{ errors[0] }}</span> 
+        </div>
+        <div>
+            <label for="m_password">Пароль:</label>
+            <input type="password" id="m_password" name="m_password" value="{{ m_password }}">
+        </div>
+        <div>
+            <button type="submit">Войти</button>
+            <button type="reset">Отмена</button>
+            <button>
+                <a href={{ (url_for('login')) }}>Войти как клиент</a>
+            </button>
+        </div>
+    </form>
+    <br>
+    <br>
+{% endblock %}

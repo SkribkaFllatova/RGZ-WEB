@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block main %}
+    <h1>Регистрация нового пользователя</h1>
+    <h3 style="text-align: center; color: red">{{ errors[0] }}</h3>
+    <form method="post">
+        <div>
+            <label for="c_fullname">ФИО:</label>
+            <input type="text" id="c_fullname" name="c_fullname" value="{{ c_fullname }}">
+        </div>
+        <div>
+            <label for="c_username">Логин:</label>
+            <input type="text" id="c_username" name="c_username" value="{{ c_username }}">
+            <span class='error' style="top: 1.4vw;">{{ errors[0] }}</span> 
+        </div>
+        <div>
+            <label for="c_password">Пароль:</label>
+            <input type="password" id="c_password" name="c_password" value="{{ c_password }}">
+        </div>
+        <div>
+            <label for="phone">Телефон:</label>
+            <input type="number" id="phone" name="phone" pattern="[0-9]{11}" maxlength="11" value="{{ phone }}">
+        </div>
+        <div>
+            <label for="account_number">Номер счета:</label>
+            <input type="number" id="account_number" name="account_number" pattern="[0-9]{1,20}" maxlength="20" value="{{ account_number }}">
+        </div>
+        <div>
+            <label for="balance">Количество денег:</label>
+            <input type="number" id="balance" name="balance"  value="{{ balance }}">
+        </div>
+        <div>
+            <button type="submit">Зарегистрировать пользователя</button>
+            <button type="reset">Отмена</button>
+            <button>
+                <a href={{ (url_for('login')) }}>Войти как клиент</a>
+            </button>
+        </div>
+    </form>
+    <br>
+    <br>
+{% endblock %}

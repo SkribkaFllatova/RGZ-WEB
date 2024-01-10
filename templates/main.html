@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="{{url_for('static', filename='main.css')}}">
+    <style>
+        a {
+            position: relative;
+            margin: 0vw 2.5vw 0vw 2.5vw;
+            text-decoration: none;
+            color:blueviolet
+        }
+
+        button {
+            border: 3px solid blueviolet;
+            border-radius: 15px;
+            background-color: black;
+            color: blueviolet;
+        }
+
+        .logout {
+            position: relative;
+        top: 2vw;
+        width: 30vw;
+        height: 12vw;
+        left: 34vw;
+        }
+    </style>
+</head>
+<body>
+    <header style="height: 4vw;">
+        <span style="font-size: 3vw;">Банк</span>
+        <a href="">Транзакции</a>
+
+        {% if 'm_username' in session %}
+
+        <button style="color: white; background-color: blueviolet; left: 5vw; position: relative;" href="">
+            <a style="color: white" href="/app/register" target="_self">Зарегистрировать нового пользователя</a>
+        </button>
+        <button style="color: white; background-color: blueviolet; left: 5vw; position: relative;" href="">
+            <a style="color: white" href="/app/registerAdm" target="_self">Зарегистрировать нового менеджера</a>
+        </button>
+        <span  style="right: -7vw; position: relative; color:green">{{ name }}</span>
+        <button style="position: relative; left: 15vw;">
+            <a href="{{ url_for('logout') }}">Выйти</a>
+        </button>
+
+        {% elif 'c_username' in session%}
+
+        <span  style="right: -7vw; position: relative; color:green">{{ name }}</span>
+        <button style="position: relative; left: 65vw;">
+            <a href="{{ url_for('logout') }}">Выйти</a>
+        </button>
+        
+        {% endif %}
+
+    </header>
+    
+    <main>
+    </main>
+    <br>
+    <footer style="position: relative; top: 2vw;">
+     Банк
+    </footer>
+    
+</body>
+</html>
