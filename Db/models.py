@@ -25,4 +25,4 @@ class transactions(db.Model):
     amount = db.Column(db.Float, nullable=False)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     sender_id = db.Column(db.Integer, db.ForeignKey('users.client_id'), nullable=True)
-    receiver_id = db.Column(db.Integer, db.ForeignKey('users.client_id'), nullable=True)
+    receiver_id = db.Column(db.Integer, db.ForeignKey('users.client_id', ondelete='CASCADE'), nullable=True)

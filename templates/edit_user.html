@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block main %}
+    <h1>Редактирование пользователя</h1>
+    <form method="post">
+        <label for="c_fullname">ФИО:</label>
+        <input type="text" id="c_fullname" name="c_fullname" value="{{ user.c_full_name }}" required>
+
+        <label for="c_username">Логин:</label>
+        <input type="text" id="c_username" name="c_username" value="{{ user.c_username }}" required>
+
+        <label for="c_password">Пароль:</label>
+        <input type="password" id="c_password" name="c_password" value="{{ user.c_password }}" required>
+
+        <label for="phone">Номер телефона:</label>
+        <input type="text" id="phone" name="phone" value="{{ user.phone }}" required>
+
+        <label for="account_number">Номер счета:</label>
+        <input type="text" id="account_number" name="account_number" value="{{ user.account_number }}" required>
+
+        <label for="balance">Баланс:</label>
+        <input type="text" id="balance" name="balance" value="{{ user.balance }}" required>
+        <input type="submit" value="Сохранить изменения">
+    </form>
+{% endblock %}

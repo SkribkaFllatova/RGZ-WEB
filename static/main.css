@@ -24,7 +24,13 @@ footer {
     right: 0;
 }
 
-img[src$="1car.png"]{
-    width: 20%;
-    border: 2pt solid black;
+a {
+    position: relative;
+    text-decoration: none;
+    color:white
+}
+
+button {
+    background-color: black;
+    color: white;
 }

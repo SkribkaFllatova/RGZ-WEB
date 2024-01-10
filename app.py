@@ -249,3 +249,52 @@ def transfer_money():
             return render_template('transfer_money.html', errors=errors)
         
     return render_template('transfer_money.html', errors=errors)
+
+
+@app.route('/all_users')
+def all_users():
+    if 'm_username' not in session:
+        return redirect(url_for('login'))
+
+    all_users = users.query.all()
+    return render_template('all_users.html', all_users=all_users)
+
+
+@app.route('/app/edit_user/<int:user_id>', methods=['GET', 'POST'])
+def edit_user(user_id):
+    user = users.query.get(user_id)
+
+    if request.method == 'POST':
+        c_fullname = request.form.get("c_fullname")
+        c_username = request.form.get("c_username")
+        c_password = request.form.get("c_password")
+        phone = request.form.get("phone")
+        account_number = request.form.get("account_number")
+        balance = request.form.get("balance")
+
+        user.c_full_name = c_fullname
+        user.c_username = c_username
+        user.c_password = c_password
+        user.phone = phone
+        user.account_number = account_number
+        user.balance = balance
+
+        db.session.commit()
+
+   
+        return redirect(url_for('all_users'))
+
+    return render_template('edit_user.html', user=user)
+
+
+@app.route('/delete_user/<int:user_id>')
+def delete_user(user_id):
+    if 'm_username' not in session:
+        return redirect(url_for('login'))
+
+    user = users.query.get(user_id)
+
+    db.session.delete(user)
+    db.session.commit()
+
+    return redirect(url_for('all_users'))

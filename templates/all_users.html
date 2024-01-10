@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block main %}
+<h1>Список пользователей</h1>
+<ul>
+    {% for user in all_users %}
+        <li>{{ user.c_full_name }} - <a style="color: black;" href="{{ url_for('edit_user', user_id=user.client_id) }}">Редактировать</a>   <a style="color: black" href="{{ url_for('delete_user', user_id=user.client_id) }}">Удалить</a></li>
+    {% endfor %}
+</ul>
+{% endblock %}
